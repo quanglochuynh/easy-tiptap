@@ -1,9 +1,15 @@
+import Editor from "./Editor";
 import "./App.css";
 
 function App() {
   return (
     <div className="main-container">
-      <h1>Hello, world! You clicked the button.</h1>
+      <header className="main-header">
+        <h1>TipTap Editor</h1>
+      </header>
+      <div className="editor-container">
+        <Editor />
+      </div>
     </div>
   );
 }
