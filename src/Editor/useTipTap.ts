@@ -9,7 +9,7 @@ import Underline from "@tiptap/extension-underline";
 import Italic from "@tiptap/extension-italic";
 import Strike from "@tiptap/extension-strike";
 import History from "@tiptap/extension-history";
-import Heading from "@tiptap/extension-heading";
+import Heading, { Level } from "@tiptap/extension-heading";
 import Placeholder from "@tiptap/extension-placeholder";
 import Code from "@tiptap/extension-code";
 import Blockquote from "@tiptap/extension-blockquote";
@@ -76,78 +76,21 @@ export default function useTipTap({ placeholder, content, setContent }: Props) {
     editor.chain().focus().setParagraph().run();
   }, [editor]);
 
-  const toggleHeading1 = useCallback(() => {
-    editor.chain().focus().toggleHeading({ level: 1 }).run();
-  }, [editor]);
-
-  const toggleHeading2 = useCallback(() => {
-    editor.chain().focus().toggleHeading({ level: 2 }).run();
-  }, [editor]);
-
-  const toggleHeading3 = useCallback(() => {
-    editor.chain().focus().toggleHeading({ level: 3 }).run();
-  }, [editor]);
-
-  const toggleHeading4 = useCallback(() => {
-    editor.chain().focus().toggleHeading({ level: 4 }).run();
-  }, [editor]);
-
-  const toggleHeading5 = useCallback(() => {
-    editor.chain().focus().toggleHeading({ level: 5 }).run();
-  }, [editor]);
-
-  const toggleHeading6 = useCallback(() => {
-    editor.chain().focus().toggleHeading({ level: 6 }).run();
-  }, [editor]);
-  const heading = useMemo(
-    () => [
-      {
-        level: 0,
-        toggle: toggleNormal,
-        isActive: () => editor.isActive("paragraph"),
-      },
-      {
-        level: 1,
-        toggle: toggleHeading1,
-        isActive: () => editor.isActive("heading", { level: 1 }),
-      },
-      {
-        level: 2,
-        toggle: toggleHeading2,
-        isActive: () => editor.isActive("heading", { level: 2 }),
-      },
-      {
-        level: 3,
-        toggle: toggleHeading3,
-        isActive: () => editor.isActive("heading", { level: 3 }),
-      },
-      {
-        level: 4,
-        toggle: toggleHeading4,
-        isActive: () => editor.isActive("heading", { level: 4 }),
-      },
-      {
-        level: 5,
-        toggle: toggleHeading5,
-        isActive: () => editor.isActive("heading", { level: 5 }),
-      },
-      {
-        level: 6,
-        toggle: toggleHeading6,
-        isActive: () => editor.isActive("heading", { level: 6 }),
-      },
-    ],
-    [
-      toggleNormal,
-      toggleHeading1,
-      toggleHeading2,
-      toggleHeading3,
-      toggleHeading4,
-      toggleHeading5,
-      toggleHeading6,
-      editor,
-    ]
+  const toggleHeading = useCallback(
+    (level: Level) => {
+      editor.chain().focus().setHeading({ level }).run();
+    },
+    [editor]
   );
+
+  const heading = editor ? editor.getAttributes("heading") : undefined;
+
+  const currentHeading = useMemo((): number => {
+    if (heading) {
+      return heading.level || 0;
+    }
+    return 0;
+  }, [heading]);
 
   const toggleCode = useCallback(() => {
     editor.chain().focus().toggleCode().run();
@@ -179,11 +122,13 @@ export default function useTipTap({ placeholder, content, setContent }: Props) {
     toggleUnderline,
     toggleItalic,
     toggleStrike,
-    heading,
+    toggleHeading,
+    toggleNormal,
     toggleCode,
     toggleBlockquote,
     toggleBulletList,
     toggleOrderedList,
     splitListItem,
+    currentHeading,
   };
 }

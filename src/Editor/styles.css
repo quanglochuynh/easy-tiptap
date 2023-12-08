@@ -111,7 +111,7 @@
   background: #fff;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
   border: 1px solid #f1f1f1;
-  margin-bottom: 8px;
+  margin-block: 8px;
 }
 
 .tiptap-menu button {

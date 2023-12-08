@@ -14,6 +14,7 @@ import {
 } from "react-icons/lu";
 
 import { IoSyncCircleOutline } from "react-icons/io5";
+import { Level } from "@tiptap/extension-heading";
 
 type Props = {
   content: string;
@@ -23,7 +24,8 @@ type Props = {
 export default function Editor({ setContent, content }: Props) {
   const {
     editor,
-    heading,
+    toggleHeading,
+    toggleNormal,
     toggleBold,
     toggleItalic,
     toggleStrike,
@@ -33,13 +35,15 @@ export default function Editor({ setContent, content }: Props) {
     toggleBulletList,
     toggleOrderedList,
     toggleCode,
+    currentHeading,
   } = useTipTap({
     placeholder: "Start typing something...",
     content,
     setContent,
   });
+
   return (
-    <div className="tiptap-container">
+    <>
       <div className="tiptap-menu">
         <button onClick={toggleBold}>
           <LuBold />
@@ -54,15 +58,19 @@ export default function Editor({ setContent, content }: Props) {
           <LuUnderline />
         </button>
         <select
-          value={heading.findIndex((item) => item.isActive)}
+          value={currentHeading.toString()}
           onChange={(e) => {
-            heading[Number(e.target.value)].toggle();
+            if (parseInt(e.target.value) === 0) {
+              toggleNormal();
+              return;
+            }
+            toggleHeading(parseInt(e.target.value) as Level);
           }}
         >
           <option value={0}>Normal</option>
-          {heading.map((item, index) => (
+          {Array.from(Array(6).keys()).map((_, index) => (
             <option key={index} value={index + 1}>
-              Heading {item.level + 1}
+              Heading {index + 1}
             </option>
           ))}
         </select>
@@ -96,6 +104,6 @@ export default function Editor({ setContent, content }: Props) {
           <span className="sync-text">Sync Preview & Code</span>
         </button>
       </div>
-    </div>
+    </>
   );
 }

@@ -73,8 +73,9 @@ body {
 .preview-content {
   max-width: 100%;
   /* width: 50rem; */
-  border: olivedrab solid 1px;
-  border-radius: 1rem;
+  /* border: olivedrab solid 1px; */
+  border-radius: 0.5rem;
+  box-shadow: rgba(0, 0, 0, 0.2) 0 0 9px;
   margin-block: 1rem;
   padding: 1rem;
 }
