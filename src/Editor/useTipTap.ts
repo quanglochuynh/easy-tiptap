@@ -134,6 +134,14 @@ export default function useTipTap({ placeholder, content, setContent }: Props) {
     editor.chain().focus().toggleHighlight().run();
   }, [editor]);
 
+  const toggleUndo = useCallback(() => {
+    editor.chain().focus().undo().run();
+  }, [editor]);
+
+  const toggleRedo = useCallback(() => {
+    editor.chain().focus().redo().run();
+  }, [editor]);
+
   const handleSelectImg = useCallback(
     async ({ target }: ChangeEvent<HTMLInputElement>) => {
       const files = target.files;
@@ -176,5 +184,7 @@ export default function useTipTap({ placeholder, content, setContent }: Props) {
     handleSelectImg,
     toggleTextAlign,
     toggleHighlight,
+    toggleUndo,
+    toggleRedo,
   };
 }

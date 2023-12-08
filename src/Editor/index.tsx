@@ -13,9 +13,11 @@ import {
   LuList,
   LuListOrdered,
   LuQuote,
+  LuRedo,
   LuSplit,
   LuStrikethrough,
   LuUnderline,
+  LuUndo,
 } from "react-icons/lu";
 
 import { IoSyncCircleOutline } from "react-icons/io5";
@@ -46,6 +48,8 @@ export default function Editor({ setContent, content }: Props) {
     handleSelectImg,
     toggleTextAlign,
     toggleHighlight,
+    toggleRedo,
+    toggleUndo,
   } = useTipTap({
     placeholder: "Start typing something...",
     content,
@@ -55,6 +59,12 @@ export default function Editor({ setContent, content }: Props) {
   return (
     <>
       <div className="tiptap-menu">
+        <button onClick={toggleUndo}>
+          <LuUndo />
+        </button>
+        <button onClick={toggleRedo}>
+          <LuRedo />
+        </button>
         <button onClick={toggleBold}>
           <LuBold />
         </button>
