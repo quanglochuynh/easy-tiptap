@@ -17,6 +17,9 @@ import ListItem from "@tiptap/extension-list-item";
 import BulletList from "@tiptap/extension-bullet-list";
 import OrderedList from "@tiptap/extension-ordered-list";
 import Image from "@tiptap/extension-image";
+import uploadImage from "./uploadImage";
+import Highlight from "@tiptap/extension-highlight";
+import TextAlign from "@tiptap/extension-text-align";
 
 type Props = {
   placeholder?: string;
@@ -49,6 +52,10 @@ export default function useTipTap({ placeholder, content, setContent }: Props) {
       ListItem,
       Image.configure({
         inline: true,
+      }),
+      Highlight,
+      TextAlign.configure({
+        types: ["heading", "paragraph"],
       }),
     ],
     content,
@@ -113,9 +120,18 @@ export default function useTipTap({ placeholder, content, setContent }: Props) {
   }, [editor]);
 
   const splitListItem = useCallback(() => {
-    console.log("splitListItem");
-
     editor.chain().focus().splitListItem("listItem").run();
+  }, [editor]);
+
+  const toggleTextAlign = useCallback(
+    (align: "left" | "center" | "right") => {
+      editor.chain().focus().setTextAlign(align).run();
+    },
+    [editor]
+  );
+
+  const toggleHighlight = useCallback(() => {
+    editor.chain().focus().toggleHighlight().run();
   }, [editor]);
 
   const handleSelectImg = useCallback(
@@ -123,12 +139,10 @@ export default function useTipTap({ placeholder, content, setContent }: Props) {
       const files = target.files;
       if (!files) return;
       try {
-        const ret = (await uploadImageToCloud()) as {
-          data: { url: string };
-        };
-        // return ret.data.url;
-        editor.chain().focus().setImage({ src: ret.data.url }).run();
+        const ret = (await uploadImage()) as string;
+        editor.chain().focus().setImage({ src: ret }).run();
       } catch (error) {
+        alert((error as Error).message);
         return;
       }
     },
@@ -145,8 +159,6 @@ export default function useTipTap({ placeholder, content, setContent }: Props) {
 
   return {
     editor,
-    content,
-    setContent,
     toggleBold,
     toggleUnderline,
     toggleItalic,
@@ -162,17 +174,7 @@ export default function useTipTap({ placeholder, content, setContent }: Props) {
     currentHeading,
     fileRef,
     handleSelectImg,
+    toggleTextAlign,
+    toggleHighlight,
   };
 }
-
-const uploadImageToCloud = () => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        data: {
-          url: "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
-        },
-      });
-    }, 1000);
-  });
-};

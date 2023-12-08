@@ -2,8 +2,12 @@ import useTipTap from "./useTipTap";
 import { EditorContent } from "@tiptap/react";
 import "./styles.css";
 import {
+  LuAlignCenter,
+  LuAlignLeft,
+  LuAlignRight,
   LuBold,
   LuCode,
+  LuHighlighter,
   LuImage,
   LuItalic,
   LuList,
@@ -40,6 +44,8 @@ export default function Editor({ setContent, content }: Props) {
     addImage,
     fileRef,
     handleSelectImg,
+    toggleTextAlign,
+    toggleHighlight,
   } = useTipTap({
     placeholder: "Start typing something...",
     content,
@@ -92,6 +98,18 @@ export default function Editor({ setContent, content }: Props) {
         </button>
         <button onClick={splitListItem}>
           <LuSplit />
+        </button>
+        <button onClick={() => toggleTextAlign("left")}>
+          <LuAlignLeft />
+        </button>
+        <button onClick={() => toggleTextAlign("center")}>
+          <LuAlignCenter />
+        </button>
+        <button onClick={() => toggleTextAlign("right")}>
+          <LuAlignRight />
+        </button>
+        <button onClick={() => toggleHighlight()}>
+          <LuHighlighter />
         </button>
         <input
           type="file"
