@@ -1,16 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+body {
+  font-family: 'Outfit', sans-serif;
+}
+
 .main-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* justify-content: center; */
   min-height: 100vh;
 }
 
 .tiptap-container {
   max-width: 100%;
   width: 50rem;
-  margin: 0 auto;
-  padding: 0 20px;
-  min-height: 20rem;
-  background: #aaa;
+  border: olivedrab solid 1px;
+  border-radius: 1rem;
+  padding: 1rem;
 }
