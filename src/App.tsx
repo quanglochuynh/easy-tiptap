@@ -20,6 +20,12 @@ function App() {
           dangerouslySetInnerHTML={{ __html: content }}
         />
       </div>
+      <div className="code-container">
+        <h2>HTML</h2>
+        <pre>
+          <code>{content}</code>
+        </pre>
+      </div>
     </div>
   );
 }

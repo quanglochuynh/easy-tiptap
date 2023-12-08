@@ -16,5 +16,65 @@ body {
   width: 50rem;
   border: olivedrab solid 1px;
   border-radius: 1rem;
+  margin-block: 1rem;
+  padding: 1rem;
+}
+
+.sync-button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: olivedrab solid 1px;
+  background-color: white;
+  color: olivedrab;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.sync-button:hover {
+  background-color: olivedrab;
+  color: white;
+  box-shadow: 0 0 0.5rem olivedrab;
+}
+
+.sync-button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.preview-container {
+  max-width: 100%;
+  width: 50rem;
+  border: olivedrab solid 1px;
+  border-radius: 1rem;
+  padding: 1rem;
+  margin-block: 1rem;
+}
+
+.code-container {
+  max-width: 100%;
+  width: 50rem;
+  border: olivedrab solid 1px;
+  border-radius: 1rem;
+  margin-block: 1rem;
+  padding: 1rem;
+}
+
+.code-container code {
+  padding: 1rem;
+  display: block;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.preview-content {
+  max-width: 100%;
+  /* width: 50rem; */
+  border: olivedrab solid 1px;
+  border-radius: 1rem;
+  margin-block: 1rem;
   padding: 1rem;
 }

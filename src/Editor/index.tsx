@@ -13,6 +13,8 @@ import {
   LuUnderline,
 } from "react-icons/lu";
 
+import { IoSyncCircleOutline } from "react-icons/io5";
+
 type Props = {
   content: string;
   setContent: (content: string) => void;
@@ -79,16 +81,20 @@ export default function Editor({ setContent, content }: Props) {
         <button onClick={splitListItem}>
           <LuSplit />
         </button>
+      </div>
+      <div className="tiptap-editor">
+        {editor && <EditorContent editor={editor} />}
+      </div>
+      <div className="sync-button-container">
         <button
+          className="sync-button"
           onClick={() => {
             setContent(editor.getHTML());
           }}
         >
-          log content
+          <IoSyncCircleOutline size={22} />
+          <span className="sync-text">Sync Preview & Code</span>
         </button>
-      </div>
-      <div className="tiptap-editor">
-        {editor && <EditorContent editor={editor} />}
       </div>
     </div>
   );
