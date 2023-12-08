@@ -93,3 +93,9 @@ body {
   padding-left: 1rem;
   margin-left: 0;
 }
+
+.author-name {
+  font-size: 0.8rem;
+  font-style: italic;
+  text-align: right;
+}

@@ -27,6 +27,14 @@ function App() {
           {formatHTMLString(content)}
         </SyntaxHighlighter>
       </div>
+      <a
+        href="https://locqhuynh.tech"
+        target="_blank"
+        rel="noreferrer"
+        className="author-link"
+      >
+        <span className="author-name">Loc Q. Huynh - Dec 2023</span>
+      </a>
     </div>
   );
 }
