@@ -1,6 +1,9 @@
 import Editor from "./Editor";
 import "./App.css";
 import { useState } from "react";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import { monokaiSublime } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { formatHTMLString } from "./Utilities/formatCode";
 
 function App() {
   const [content, setContent] = useState<string>("<p></p>");
@@ -20,9 +23,9 @@ function App() {
       </div>
       <div className="code-container">
         <code>HTML</code>
-        <pre>
-          <code>{content}</code>
-        </pre>
+        <SyntaxHighlighter language="html" style={monokaiSublime}>
+          {formatHTMLString(content)}
+        </SyntaxHighlighter>
       </div>
     </div>
   );
