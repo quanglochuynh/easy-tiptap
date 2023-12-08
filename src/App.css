@@ -79,3 +79,17 @@ body {
   margin-block: 1rem;
   padding: 1rem;
 }
+
+.preview-content code {
+  padding: 1rem;
+  display: block;
+  white-space: pre-wrap;
+  word-break: break-all;
+  background-color: #f1f1f1;
+}
+
+.preview-content blockquote {
+  border-left: 0.5rem solid olivedrab;
+  padding-left: 1rem;
+  margin-left: 0;
+}

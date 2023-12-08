@@ -4,6 +4,7 @@ import "./styles.css";
 import {
   LuBold,
   LuCode,
+  LuImage,
   LuItalic,
   LuList,
   LuListOrdered,
@@ -36,6 +37,9 @@ export default function Editor({ setContent, content }: Props) {
     toggleOrderedList,
     toggleCode,
     currentHeading,
+    addImage,
+    fileRef,
+    handleSelectImg,
   } = useTipTap({
     placeholder: "Start typing something...",
     content,
@@ -88,6 +92,16 @@ export default function Editor({ setContent, content }: Props) {
         </button>
         <button onClick={splitListItem}>
           <LuSplit />
+        </button>
+        <input
+          type="file"
+          id="file"
+          ref={fileRef}
+          multiple={false}
+          onChange={handleSelectImg}
+        />
+        <button onClick={addImage}>
+          <LuImage />
         </button>
       </div>
       <div className="tiptap-editor">

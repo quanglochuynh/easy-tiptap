@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from "react";
+import { ChangeEvent, useCallback, useEffect, useMemo, useRef } from "react";
 import { useEditor, Editor } from "@tiptap/react";
 import Document from "@tiptap/extension-document";
 import Paragraph from "@tiptap/extension-paragraph";
@@ -16,6 +16,7 @@ import Blockquote from "@tiptap/extension-blockquote";
 import ListItem from "@tiptap/extension-list-item";
 import BulletList from "@tiptap/extension-bullet-list";
 import OrderedList from "@tiptap/extension-ordered-list";
+import Image from "@tiptap/extension-image";
 
 type Props = {
   placeholder?: string;
@@ -46,6 +47,9 @@ export default function useTipTap({ placeholder, content, setContent }: Props) {
       BulletList,
       OrderedList,
       ListItem,
+      Image.configure({
+        inline: true,
+      }),
     ],
     content,
   }) as Editor;
@@ -114,6 +118,31 @@ export default function useTipTap({ placeholder, content, setContent }: Props) {
     editor.chain().focus().splitListItem("listItem").run();
   }, [editor]);
 
+  const handleSelectImg = useCallback(
+    async ({ target }: ChangeEvent<HTMLInputElement>) => {
+      const files = target.files;
+      if (!files) return;
+      try {
+        const ret = (await uploadImageToCloud()) as {
+          data: { url: string };
+        };
+        // return ret.data.url;
+        editor.chain().focus().setImage({ src: ret.data.url }).run();
+      } catch (error) {
+        return;
+      }
+    },
+    [editor]
+  );
+
+  const addImage = useCallback(() => {
+    if (fileRef.current) {
+      fileRef.current.click();
+    }
+  }, []);
+
+  const fileRef = useRef<HTMLInputElement>(null);
+
   return {
     editor,
     content,
@@ -129,6 +158,21 @@ export default function useTipTap({ placeholder, content, setContent }: Props) {
     toggleBulletList,
     toggleOrderedList,
     splitListItem,
+    addImage,
     currentHeading,
+    fileRef,
+    handleSelectImg,
   };
 }
+
+const uploadImageToCloud = () => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({
+        data: {
+          url: "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
+        },
+      });
+    }, 1000);
+  });
+};
