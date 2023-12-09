@@ -96,7 +96,7 @@ export default function useTipTap({ placeholder, content, setContent }: Props) {
 
   const heading = editor ? editor.getAttributes("heading") : undefined;
 
-  const currentHeading = useMemo((): number => {
+  const currentHeading = useMemo((): Level | 0 => {
     if (heading) {
       return heading.level || 0;
     }
@@ -167,24 +167,28 @@ export default function useTipTap({ placeholder, content, setContent }: Props) {
 
   return {
     editor,
-    toggleBold,
-    toggleUnderline,
-    toggleItalic,
-    toggleStrike,
-    toggleHeading,
-    toggleNormal,
-    toggleCode,
-    toggleBlockquote,
-    toggleBulletList,
-    toggleOrderedList,
-    splitListItem,
-    addImage,
-    currentHeading,
-    fileRef,
-    handleSelectImg,
-    toggleTextAlign,
-    toggleHighlight,
-    toggleUndo,
-    toggleRedo,
+    menuActions: {
+      addImage,
+      currentHeading,
+      fileRef,
+      handleSelectImg,
+    },
+    toggles: {
+      splitListItem,
+      toggleBold,
+      toggleUnderline,
+      toggleItalic,
+      toggleStrike,
+      toggleHeading,
+      toggleNormal,
+      toggleCode,
+      toggleBlockquote,
+      toggleBulletList,
+      toggleOrderedList,
+      toggleTextAlign,
+      toggleHighlight,
+      toggleUndo,
+      toggleRedo,
+    },
   };
 }

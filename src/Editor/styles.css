@@ -35,6 +35,10 @@
   margin: 0;
 }
 
+.tiptap-editor p+p {
+  margin-top: 0.5rem;
+}
+
 .tiptap-editor ul,
 .tiptap-editor ol {
   margin: 0;
