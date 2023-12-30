@@ -1,41 +1,69 @@
-import Editor from "./Editor";
-import "./App.css";
 import { useState } from "react";
-import SyntaxHighlighter from "react-syntax-highlighter";
-import { monokaiSublime } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import { formatHTML } from "./Utilities/formatCode";
+import useTipTap from "./useTipTap";
+import MenuBar from "./MenuBar";
+import ContentEditor from "./ContentEditor";
+import "./styles.css";
 
 function App() {
   const [content, setContent] = useState<string>("<p></p>");
-
+  const { editor, toggles, menuActions } = useTipTap({
+    placeholder: "Start typing something...",
+    content,
+    setContent: (content: string) => setContent(content),
+    uploadImage: async (file: File) => {
+      console.log(file);
+      return "https://picsum.photos/200/300";
+    },
+  });
   return (
-    <div className="main-container">
-      <div className="tiptap-container">
-        <code>Editor</code>
-        <Editor content={content} setContent={setContent} />
-      </div>
-      <div className="preview-container">
-        <code>Preview</code>
-        <div
-          className="preview-content"
-          dangerouslySetInnerHTML={{ __html: content }}
-        />
-      </div>
-      <div className="code-container">
-        <code>HTML</code>
-        <SyntaxHighlighter language="html" style={monokaiSublime}>
-          {formatHTML(content)}
-        </SyntaxHighlighter>
-      </div>
-      <a
-        href="https://locqhuynh.tech"
-        target="_blank"
-        rel="noreferrer"
-        className="author-link"
-      >
-        <span className="author-name">Loc Q. Huynh - Dec 2023</span>
-      </a>
-    </div>
+    <>
+      <MenuBar
+        toggles={toggles}
+        menuActions={menuActions}
+        boxStyle={{
+          border: "black 2px solid",
+          padding: 8,
+          display: "flex",
+          alignItems: "center",
+          gap: 4,
+          borderRadius: 8,
+          marginBottom: 8,
+        }}
+        buttonStyle={{
+          backgroundColor: "white",
+          border: "none",
+          width: 32,
+          height: 32,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          cursor: "pointer",
+          marginInline: 4,
+          boxShadow: "0 0 7px 0 rgba(0, 0, 0, 0.2)",
+          borderRadius: 4,
+          color: "#222",
+        }}
+        selectStyle={{
+          backgroundColor: "white",
+          border: "none",
+          height: 32,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          cursor: "pointer",
+          marginInline: 4,
+          paddingInline: 8,
+          boxShadow: "0 0 7px 0 rgba(0, 0, 0, 0.2)",
+          borderRadius: 4,
+          color: "#222",
+        }}
+      />
+      <ContentEditor
+        editor={editor}
+        boxStyle={{ border: "black 2px solid", padding: 4, borderRadius: 8 }}
+      />
+      <p>{content}</p>
+    </>
   );
 }
 

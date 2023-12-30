@@ -1,64 +1,47 @@
 import { ChangeEvent, useCallback, useEffect, useMemo, useRef } from "react";
 import { useEditor, Editor } from "@tiptap/react";
-import Document from "@tiptap/extension-document";
-import Paragraph from "@tiptap/extension-paragraph";
-import Text from "@tiptap/extension-text";
-import Link from "@tiptap/extension-link";
-import Bold from "@tiptap/extension-bold";
 import Underline from "@tiptap/extension-underline";
-import Italic from "@tiptap/extension-italic";
-import Strike from "@tiptap/extension-strike";
-import History from "@tiptap/extension-history";
-import Heading, { Level } from "@tiptap/extension-heading";
+import { Level } from "@tiptap/extension-heading";
 import Placeholder from "@tiptap/extension-placeholder";
-import Code from "@tiptap/extension-code";
-import Blockquote from "@tiptap/extension-blockquote";
-import ListItem from "@tiptap/extension-list-item";
-import BulletList from "@tiptap/extension-bullet-list";
-import OrderedList from "@tiptap/extension-ordered-list";
 import Image from "@tiptap/extension-image";
-import uploadImage from "../Utilities/uploadImage";
 import Highlight from "@tiptap/extension-highlight";
 import TextAlign from "@tiptap/extension-text-align";
+import StarterKit from "@tiptap/starter-kit";
 
 type Props = {
   placeholder?: string;
   content?: string;
   setContent: (content: string) => void;
+  uploadImage?: (file: File) => Promise<string>;
 };
 
-export default function useTipTap({ placeholder, content, setContent }: Props) {
+export default function useTipTap({
+  placeholder,
+  content,
+  setContent,
+  uploadImage,
+}: Props) {
   const editor = useEditor({
+    content,
     extensions: [
-      Document,
-      History,
-      Paragraph,
-      Text,
-      Link.configure({
-        openOnClick: false,
+      StarterKit.configure({
+        heading: {
+          levels: [1, 2, 3, 4, 5, 6],
+        },
       }),
-      Bold,
-      Underline,
-      Italic,
-      Strike,
-      Heading,
       Placeholder.configure({
         placeholder: placeholder || "",
       }),
-      Code,
-      Blockquote,
-      BulletList,
-      OrderedList,
-      ListItem,
       Image.configure({
         inline: true,
       }),
-      Highlight,
+      // History,
       TextAlign.configure({
         types: ["heading", "paragraph"],
       }),
+      Underline,
+      Highlight,
     ],
-    content,
   }) as Editor;
 
   useEffect(() => {
@@ -124,7 +107,7 @@ export default function useTipTap({ placeholder, content, setContent }: Props) {
   }, [editor]);
 
   const toggleTextAlign = useCallback(
-    (align: "left" | "center" | "right") => {
+    (align: "left" | "center" | "right" | "justify") => {
       editor.chain().focus().setTextAlign(align).run();
     },
     [editor]
@@ -145,16 +128,19 @@ export default function useTipTap({ placeholder, content, setContent }: Props) {
   const handleSelectImg = useCallback(
     async ({ target }: ChangeEvent<HTMLInputElement>) => {
       const files = target.files;
-      if (!files) return;
+      if (!files) return undefined;
+      if (files.length === 0) return undefined;
+      if (files[0].type.indexOf("image/") === -1) return undefined;
+      if (!uploadImage) return undefined;
       try {
-        const ret = (await uploadImage()) as string;
+        const ret = (await uploadImage(files[0])) as string;
         editor.chain().focus().setImage({ src: ret }).run();
       } catch (error) {
         alert((error as Error).message);
         return;
       }
     },
-    [editor]
+    [editor, uploadImage]
   );
 
   const addImage = useCallback(() => {
@@ -168,6 +154,7 @@ export default function useTipTap({ placeholder, content, setContent }: Props) {
   return {
     editor,
     menuActions: {
+      hasImageAPI: uploadImage !== undefined,
       addImage,
       currentHeading,
       fileRef,
